@@ -39,7 +39,17 @@ const routes = [
         component: () =>
             import(/* webpackChunkName: "academicAnalysis" */ "../views/system/academic/AcademicAnalysis.vue"),
     },
-
+    {
+        path: "/system/schedule/student",
+        name: "studentSchedule",
+        component: () => import(/* webpackChunkName: "student" */ "../views/system/academic/StudentSchedule.vue"),
+    },
+    {
+        path: "/system/academic/student",
+        name: "academicStudent",
+        component: () =>
+            import(/* webpackChunkName: "academicStudent" */ "../views/system/academic/StudentAcademic.vue"),
+    },
     {
         path: "/student",
         name: "studentMe",
@@ -54,6 +64,14 @@ const routes = [
         path: "/student/enroll",
         name: "studentEnroll",
         component: () => import(/* webpackChunkName: "studentMe" */ "../views/student/enrollCourse.vue"),
+        path: "/system/course/data/all",
+        name: "courseList",
+        component: () => import(/* webpackChunkName: "courseList" */ "../views/system/courses/CourseList.vue"),
+    },
+    {
+        path: "/system/course/data/new",
+        name: "courseNew",
+        component: () => import(/* webpackChunkName: "courseNew" */ "../views/system/courses/CourseNew.vue"),
     },
     {
         path: "/login",

@@ -6,8 +6,9 @@
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
         "lint": "vue-cli-service lint",
-        "commit": "git commit -m 'Update'",
-        "push": "git add . && yarn commit && git push origin main"
+        "commit": "git add . && git commit -m 'Update'",
+        "push": "yarn commit && git push origin main",
+        "pull": "git pull origin main"
     },
     "dependencies": {
         "axios": "^1.1.3",
