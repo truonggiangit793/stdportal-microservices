@@ -37,6 +37,11 @@ const routes = [
         component: () => import(/* webpackChunkName: "academicAnalysis" */ "../views/system/academic/AcademicAnalysis.vue"),
     },
     {
+        path: "/system/schedule/student",
+        name: "studentSchedule",
+        component: () => import(/* webpackChunkName: "student" */ "../views/system/academic/StudentSchedule.vue"),
+    },
+    {
         path: "/system/academic/student",
         name: "academicStudent",
         component: () => import(/* webpackChunkName: "academicStudent" */ "../views/system/academic/StudentAcademic.vue"),

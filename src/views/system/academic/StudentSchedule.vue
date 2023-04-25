@@ -5,11 +5,11 @@
             <Loading :active="isLoading" :is-full-page="true" :can-cancel="false" />
             <div class="flex items-center mb-4 text-green-700 font-bold text-lg uppercase">
                 <ThemifyIcon icon="menu" />
-                <h1 class="ml-2">Student academic:</h1>
+                <h1 class="ml-2">Student schedule:</h1>
             </div>
             <div class="mb-2 text-md font-medium text-gray-900 flex items-center">
                 <ThemifyIcon icon="settings" />
-                <p class="ml-2">Please enter a specific student for academic information by providing student ID:</p>
+                <p class="ml-2">Please enter a specific student for schedule information by providing student ID:</p>
             </div>
             <div class="mb-6">
                 <div class="grid gap-6 mb-6 md:grid-cols-2">
@@ -34,7 +34,7 @@
                 </div>
                 <button
                     type="submit"
-                    v-on:click="handleFetchStudentAcademic"
+                    v-on:click="handleFetchStudentSchedule"
                     class="text-white transition-all bg-blue-400 hover:bg-blue-500 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-8 py-2.5 text-center"
                 >
                     Submit
@@ -42,7 +42,7 @@
             </div>
             <div class="mb-2 text-md font-medium text-gray-900 flex items-center">
                 <ThemifyIcon icon="settings" />
-                <p class="ml-2">List of academic:</p>
+                <p class="ml-2">List of schedules:</p>
             </div>
             <div class="overflow-x-auto relative">
                 <table class="overflow-scroll w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -50,20 +50,32 @@
                         <tr>
                             <th scope="col" class="py-3 px-6">Student ID</th>
                             <th scope="col" class="py-3 px-6">Course code</th>
+                            <th scope="col" class="py-3 px-6">Class ID</th>
                             <th scope="col" class="py-3 px-6">Semester</th>
-                            <th scope="col" class="py-3 px-6">Submitted on</th>
+                            <th scope="col" class="py-3 px-6">Group</th>
+                            <th scope="col" class="py-3 px-6">Day</th>
+                            <th scope="col" class="py-3 px-6">Periods</th>
+                            <th scope="col" class="py-3 px-6">Weeks</th>
+                            <th scope="col" class="py-3 px-6">Members</th>
+                            <th scope="col" class="py-3 px-6">Joined date</th>
                         </tr>
                     </thead>
-                    <tbody v-if="studentAcademicData && studentAcademicData.length > 0">
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700" v-for="(academic, i) in studentAcademicData" :key="i">
-                            <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ academic.studentId }}</th>
-                            <td class="py-4 px-6">{{ academic.courseCode }}</td>
-                            <td class="py-4 px-6">{{ academic.semesterAlias }}</td>
-                            <td class="py-4 px-6">{{ dateFormat(academic.createdAt) }}</td>
+                    <tbody v-if="studentSchedule && studentSchedule.length > 0">
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700" v-for="(schedule, i) in studentSchedule" :key="i">
+                            <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ schedule.studentId }}</th>
+                            <td class="py-4 px-6">{{ schedule.courseCode }}</td>
+                            <td class="py-4 px-6">{{ schedule.classId }}</td>
+                            <td class="py-4 px-6">{{ schedule.semesterAlias }}</td>
+                            <td class="py-4 px-6">{{ schedule.groupId }}</td>
+                            <td class="py-4 px-6">{{ schedule.schedule.day }}</td>
+                            <td class="py-4 px-6">{{ schedule.schedule.periods.toString() }}</td>
+                            <td class="py-4 px-6">{{ schedule.schedule.weeks.toString() }}</td>
+                            <td class="py-4 px-6">{{ schedule.schedule.memberNum }}</td>
+                            <td class="py-4 px-6">{{ dateFormat(schedule.createdAt) }}</td>
                         </tr>
                     </tbody>
                 </table>
-                <div v-if="!studentAcademicData || studentAcademicData.length == 0" class="flex w-full justify-center p-8">
+                <div v-if="!studentSchedule || studentSchedule.length == 0" class="flex w-full justify-center p-8">
                     <h1 class="">Empty list, there is no data!</h1>
                 </div>
             </div>
@@ -87,7 +99,7 @@ export default {
             studentId: "",
             semesterAlias: "",
             semesterAliasList: [],
-            studentAcademicData: [],
+            studentSchedule: [],
         };
     },
     async mounted() {
@@ -109,23 +121,26 @@ export default {
                 });
             this.isLoading = false;
         },
-        async handleFetchStudentAcademic() {
+        async handleFetchStudentSchedule() {
             this.isLoading = true;
             await axios
-                .get(`${process.env.VUE_APP_API_GATEWAY}/course-service/v1/academic/get/?studentId=${this.studentId}&semesterAlias=${this.semesterAlias}`)
+                .post(`${process.env.VUE_APP_API_GATEWAY}/course-service/v1/enrollment/all`, {
+                    studentId: this.studentId,
+                    semesterAlias: this.semesterAlias,
+                })
                 .then((res) => {
                     if (res.data.status) {
                         this.toastify.success(res.data.message);
-                        this.studentAcademicData = res.data.data.list;
+                        this.studentSchedule = res.data.data.list;
                     } else {
                         this.toastify.error(res.data.message);
-                        this.studentAcademicData = [];
+                        this.studentSchedule = [];
                     }
                 })
                 .catch((err) => {
                     if (!err.response?.data.message) return this.toastify.error(err.message);
                     this.toastify.error(err.response.data.message);
-                    this.studentAcademicData = [];
+                    this.studentSchedule = [];
                 });
             this.isLoading = false;
         },
