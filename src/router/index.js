@@ -24,22 +24,23 @@ const routes = [
     {
         path: "/system/department/all",
         name: "departmentAll",
-        component: () =>
-            import(/* webpackChunkName: "departmentAll" */ "../views/system/departments/DepartmentList.vue"),
+        component: () => import(/* webpackChunkName: "departmentAll" */ "../views/system/departments/DepartmentList.vue"),
     },
     {
         path: "/system/department/new",
         name: "departmentNew",
-        component: () =>
-            import(/* webpackChunkName: "departmentNew" */ "../views/system/departments/DepartmentNew.vue"),
+        component: () => import(/* webpackChunkName: "departmentNew" */ "../views/system/departments/DepartmentNew.vue"),
     },
     {
         path: "/system/academic/analysis",
         name: "academicAnalysis",
-        component: () =>
-            import(/* webpackChunkName: "academicAnalysis" */ "../views/system/academic/AcademicAnalysis.vue"),
+        component: () => import(/* webpackChunkName: "academicAnalysis" */ "../views/system/academic/AcademicAnalysis.vue"),
     },
-
+    {
+        path: "/system/academic/student",
+        name: "academicStudent",
+        component: () => import(/* webpackChunkName: "academicStudent" */ "../views/system/academic/StudentAcademic.vue"),
+    },
     {
         path: "/student",
         name: "studentMe",
@@ -54,6 +55,11 @@ const routes = [
         path: "/system/course/data/all",
         name: "courseList",
         component: () => import(/* webpackChunkName: "courseList" */ "../views/system/courses/CourseList.vue"),
+    },
+    {
+        path: "/system/course/data/new",
+        name: "courseNew",
+        component: () => import(/* webpackChunkName: "courseNew" */ "../views/system/courses/CourseNew.vue"),
     },
     {
         path: "/login",
