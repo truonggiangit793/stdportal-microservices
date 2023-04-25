@@ -24,17 +24,20 @@ const routes = [
     {
         path: "/system/department/all",
         name: "departmentAll",
-        component: () => import(/* webpackChunkName: "departmentAll" */ "../views/system/departments/DepartmentList.vue"),
+        component: () =>
+            import(/* webpackChunkName: "departmentAll" */ "../views/system/departments/DepartmentList.vue"),
     },
     {
         path: "/system/academic/analysis",
         name: "academicAnalysis",
-        component: () => import(/* webpackChunkName: "academicAnalysis" */ "../views/system/academic/AcademicAnalysis.vue"),
+        component: () =>
+            import(/* webpackChunkName: "academicAnalysis" */ "../views/system/academic/AcademicAnalysis.vue"),
     },
     {
         path: "/system/schedule/student",
         name: "studentSchedule",
-        component: () => import(/* webpackChunkName: "studentSchedule" */ "../views/system/academic/StudentSchedule.vue"),
+        component: () =>
+            import(/* webpackChunkName: "studentSchedule" */ "../views/system/academic/StudentSchedule.vue"),
     },
     {
         path: "/system/schedule/new",
@@ -44,12 +47,23 @@ const routes = [
     {
         path: "/system/academic/student",
         name: "academicStudent",
-        component: () => import(/* webpackChunkName: "academicStudent" */ "../views/system/academic/StudentAcademic.vue"),
+        component: () =>
+            import(/* webpackChunkName: "academicStudent" */ "../views/system/academic/StudentAcademic.vue"),
     },
     {
         path: "/system/semester/all",
         name: "semesterAll",
         component: () => import(/* webpackChunkName: "semesterAll" */ "../views/system/semester/SemesterList.vue"),
+    },
+    {
+        path: "/system/student/new",
+        name: "studentNew",
+        component: () => import(/* webpackChunkName: "studentNew" */ "../views/system/student/StudentNew.vue"),
+    },
+    {
+        path: "/system/student/all",
+        name: "studentList",
+        component: () => import(/* webpackChunkName: "studentList" */ "../views/system/student/StudentList.vue"),
     },
     {
         path: "/student",

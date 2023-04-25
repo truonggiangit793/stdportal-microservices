@@ -49,13 +49,33 @@
                         </tr>
                     </thead>
                     <tbody v-if="semesterList && semesterList.length > 0">
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700" v-for="(semester, i) in semesterList" :key="i">
-                            <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ semester.alias }}</th>
+                        <tr
+                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                            v-for="(semester, i) in semesterList"
+                            :key="i"
+                        >
+                            <th
+                                scope="row"
+                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                            >
+                                {{ semester.alias }}
+                            </th>
                             <td class="py-4 px-6">{{ semester.status }}</td>
                             <td class="py-4 px-6">{{ dateFormat(semester.createdAt) }}</td>
                             <td class="py-4 px-6">{{ dateFormat(semester.updatedAt) }}</td>
-                            <td class="py-4 px-6" v-on:click="semesterRemoveHandler(semester.alias)" v-if="payload.role == 'ADMIN'">
-                                <div class="text-red-500 cursor-pointer"><ThemifyIcon icon="trash" />Delete</div>
+                            <td class="py-4 px-6" v-if="payload.role == 'ADMIN'">
+                                <div
+                                    class="text-red-500 cursor-pointer"
+                                    v-on:click="semesterRemoveHandler(semester.alias)"
+                                >
+                                    Delete
+                                </div>
+                                <div
+                                    v-on:click="semesterUpdateStatusHandler(semester.alias)"
+                                    class="text-blue-500 cursor-pointer"
+                                >
+                                    Status
+                                </div>
                             </td>
                         </tr>
                     </tbody>
@@ -109,7 +129,9 @@ export default {
         async registerAliasHandler() {
             this.isLoading = true;
             await axios
-                .post(`${process.env.VUE_APP_API_GATEWAY}/course-service/v1/semester/new`, { alias: this.semesterAlias })
+                .post(`${process.env.VUE_APP_API_GATEWAY}/course-service/v1/semester/new`, {
+                    alias: this.semesterAlias,
+                })
                 .then((res) => {
                     if (res.data.status) {
                         this.toastify.success(res.data.message);
@@ -129,6 +151,24 @@ export default {
             this.isLoading = true;
             await axios
                 .delete(`${process.env.VUE_APP_API_GATEWAY}/course-service/v1/semester/delete/${alias}`)
+                .then((res) => {
+                    if (res.data.status) {
+                        this.toastify.success(res.data.message);
+                    } else {
+                        this.toastify.error(res.data.message);
+                    }
+                })
+                .catch((err) => {
+                    if (!err.response?.data.message) return this.toastify.error(err.message);
+                    this.toastify.error(err.response.data.message);
+                });
+            this.fetchData();
+            this.isLoading = false;
+        },
+        async semesterUpdateStatusHandler(alias) {
+            this.isLoading = true;
+            await axios
+                .patch(`${process.env.VUE_APP_API_GATEWAY}/course-service/v1/semester/${alias}`)
                 .then((res) => {
                     if (res.data.status) {
                         this.toastify.success(res.data.message);

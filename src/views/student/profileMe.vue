@@ -15,13 +15,27 @@
                 <div class="grid gap-6 mb-6 grid-cols-2" v-if="studentData">
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">User code</label>
-                        <input :value="studentData.id_student" disabled class="bg-gray-200 border border-gray-300 text-gray-500 text-sm rounded-lg block w-full p-2.5" />
+                        <input
+                            :value="studentData.id_student"
+                            disabled
+                            class="bg-gray-200 border border-gray-300 text-gray-500 text-sm rounded-lg block w-full p-2.5"
+                        />
                     </div>
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Full name</label>
                         <input
+                            disabled
                             v-model="studentData.fullName"
                             placeholder="Fullname"
+                            type="text"
+                            class="bg-gray-200 border border-gray-300 text-gray-500 text-sm rounded-lg block w-full p-2.5"
+                        />
+                    </div>
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Address</label>
+                        <input
+                            v-model="studentData.address"
+                            placeholder="address"
                             type="text"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         />
@@ -29,7 +43,7 @@
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Email</label>
                         <input
-                         disabled
+                            disabled
                             v-model="studentData.email"
                             type="email"
                             placeholder="example@example.com"
@@ -37,7 +51,9 @@
                         />
                     </div>
                     <div>
-                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Phone number</label>
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                            >Phone number</label
+                        >
                         <input
                             type="tel"
                             pattern="[0-9]{4}-[0-9]{3}-[0-9]{3}"
@@ -46,12 +62,11 @@
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         />
                     </div>
-                   
-                  
                 </div>
                 <button
                     type="submit"
                     class="text-white transition-all bg-blue-400 hover:bg-blue-500 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-8 py-2.5 text-center"
+                    @click="updateHandler()"
                 >
                     Update
                 </button>
@@ -71,56 +86,62 @@ import "vue-loading-overlay/dist/vue-loading.css";
 import StudentMenu from "@/components/StudentMenu.vue";
 
 export default {
-    components: { StudentMenu, Loading},
+    components: { StudentMenu, Loading },
     data() {
         return {
             isLoading: false,
             // fullName: "",
             // password: "",
             // role: "STAFF",
-            studentData : null
+            studentData: null,
         };
     },
-    async mounted(){
-        this.fetchData() 
-
+    async mounted() {
+        this.fetchData();
     },
     methods: {
-         dateFormat,
+        dateFormat,
         async fetchData() {
             this.isLoading = true;
             await axios
-                .get(`${process.env.VUE_APP_API_GATEWAY}/client-service/v1/student/get/${this.payload.username}?token=${this.accessToken}` )
-                .then((res)=>{
+                .get(
+                    `${process.env.VUE_APP_API_GATEWAY}/client-service/v1/student/get/${this.payload.username}?token=${this.accessToken}`
+                )
+                .then((res) => {
                     console.log(res);
                     if (res.data.status) {
                         this.toastify.success(res.data.message);
-                        this.studentData = res.data.data
+                        this.studentData = res.data.data;
                     } else {
                         this.toastify.error(res.data.message);
                     }
                 })
-                .catch((err)=>{
+                .catch((err) => {
                     this.toastify.error(err.data.message);
                 });
             this.isLoading = false;
         },
-         async updateHandler() {
+        async updateHandler() {
             this.isLoading = true;
             await axios
-                .patch(`${process.env.VUE_APP_API_GATEWAY}/student/update?token=${this.accessToken}`, 
+                .patch(
+                    `${process.env.VUE_APP_API_GATEWAY}/client-service/v1/student/update?token=${this.accessToken}`,
                     {
-                    id_student: this.studentData.id_student,
-                    fullName: this.studentData.fullName,
-                    phoneNumber : this.studentData.phoneNumber,
+                        id_student: this.studentData.id_student,
+                        fullName: this.studentData.fullName,
+                        phoneNumber: this.studentData.phoneNumber,
+                        address: this.studentData.address,
                     }
                 )
                 .then((res) => {
                     if (res.data.status) {
-                        this.toastify.success(res.data.msg.en);
+                        this.toastify.success(res.data.message);
                     } else {
-                        this.toastify.error(res.data.msg.en);
+                        this.toastify.error(res.data.message);
                     }
+                })
+                .catch((err) => {
+                    console.log(err.data.message);
                 });
             this.isLoading = false;
             this.fetchData();

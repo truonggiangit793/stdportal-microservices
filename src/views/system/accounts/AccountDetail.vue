@@ -15,7 +15,11 @@
                 <div class="grid gap-6 mb-6 grid-cols-2">
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">User code</label>
-                        <input :value="accountData.userCode" disabled class="bg-gray-200 border border-gray-300 text-gray-500 text-sm rounded-lg block w-full p-2.5" />
+                        <input
+                            :value="accountData.userCode"
+                            disabled
+                            class="bg-gray-200 border border-gray-300 text-gray-500 text-sm rounded-lg block w-full p-2.5"
+                        />
                     </div>
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Full name</label>
@@ -36,7 +40,9 @@
                         />
                     </div>
                     <div>
-                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Phone number</label>
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                            >Phone number</label
+                        >
                         <input
                             type="tel"
                             pattern="[0-9]{4}-[0-9]{3}-[0-9]{3}"
@@ -47,14 +53,23 @@
                     </div>
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Role</label>
-                        <select v-model="accountData.role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                        <select
+                            v-model="accountData.role"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                        >
                             <option value="MANAGER" :selected="accountData.role == 'MANAGER'">MANAGER</option>
                             <option value="STAFF" :selected="accountData.role == 'STAFF'">STAFF</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Last login</label>
-                        <input disabled :value="dateFormat(accountData.lastLogin)" class="bg-gray-200 border border-gray-300 text-gray-500 text-sm rounded-lg block w-full p-2.5" />
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                            >Last login</label
+                        >
+                        <input
+                            disabled
+                            :value="dateFormat(accountData.lastLogin)"
+                            class="bg-gray-200 border border-gray-300 text-gray-500 text-sm rounded-lg block w-full p-2.5"
+                        />
                     </div>
                 </div>
                 <button
@@ -101,12 +116,17 @@ export default {
         async updateHandler() {
             this.isLoading = true;
             await axios
-                .put(`${process.env.VUE_APP_API_GATEWAY}/account/${encodeURIComponent(this.$route.params.userCode)}/update?token=${this.accessToken}`, {
-                    email: this.accountData.email,
-                    fullName: this.accountData.fullName,
-                    phoneNumber: this.accountData.phoneNumber,
-                    role: this.accountData.role,
-                })
+                .put(
+                    `${process.env.VUE_APP_API_GATEWAY}/account/${encodeURIComponent(
+                        this.$route.params.userCode
+                    )}/update?token=${this.accessToken}`,
+                    {
+                        email: this.accountData.email,
+                        fullName: this.accountData.fullName,
+                        phoneNumber: this.accountData.phoneNumber,
+                        role: this.accountData.role,
+                    }
+                )
                 .then((res) => {
                     if (res.data.status) {
                         this.toastify.success(res.data.message);
@@ -119,20 +139,26 @@ export default {
         },
         async fetchData() {
             this.isLoading = true;
-            await axios.get(`${process.env.VUE_APP_API_GATEWAY}/account/${encodeURIComponent(this.$route.params.userCode)}/detail?token=${this.accessToken}`).then((res) => {
-                if (res.data.status && res.data.data) {
-                    this.accountData = res.data.data;
-                } else {
-                    this.accountData = {
-                        userCode: null,
-                        fullName: null,
-                        role: null,
-                        email: null,
-                        phoneNumber: null,
-                        lastLogin: null,
-                    };
-                }
-            });
+            await axios
+                .get(
+                    `${process.env.VUE_APP_API_GATEWAY}/account/${encodeURIComponent(
+                        this.$route.params.userCode
+                    )}/detail?token=${this.accessToken}`
+                )
+                .then((res) => {
+                    if (res.data.status && res.data.data) {
+                        this.accountData = res.data.data;
+                    } else {
+                        this.accountData = {
+                            userCode: null,
+                            fullName: null,
+                            role: null,
+                            email: null,
+                            phoneNumber: null,
+                            lastLogin: null,
+                        };
+                    }
+                });
             this.isLoading = false;
         },
     },

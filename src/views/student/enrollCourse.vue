@@ -30,13 +30,13 @@
                     >
                         GET LIST CLASS
                     </button>
-                    <!-- <button
+                    <button
                         type="submit"
-                        v-on:click="handleFetchCourse"
+                        v-on:click="handleFetchEnrolled"
                         class="text-white transition-all bg-blue-400 hover:bg-blue-500 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-8 py-2.5 text-center"
                     >
-                        GET LIST COURSE
-                    </button> -->
+                        GET LIST CLASS ENROLLED
+                    </button>
                 </div>
             </div>
 
@@ -93,6 +93,55 @@
                     <h1 class="">Empty list, there is no data!</h1>
                 </div>
             </div>
+
+            <div class="overflow-x-auto relative" v-if="enrollmentList && enrollmentList.length > 0">
+                <table class="overflow-scroll w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="py-3 px-6">Course name</th>
+                            <th scope="col" class="py-3 px-6">Class Id</th>
+                            <th scope="col" class="py-3 px-6">groupId</th>
+                            <th scope="col" class="py-3 px-6">day</th>
+                            <th scope="col" class="py-3 px-6">number of member</th>
+                            <th scope="col" class="py-3 px-6">periods</th>
+                            <th scope="col" class="py-3 px-6">weeks</th>
+                            <th scope="col" class="py-3 px-6">action</th>
+                        </tr>
+                    </thead>
+                    <tbody v-if="enrollmentList && enrollmentList.length > 0">
+                        <tr
+                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                            v-for="(enrollClass, i) in enrollmentList"
+                            :key="i"
+                        >
+                            <th class="py-4 px-6">{{ enrollClass.courseName }}</th>
+                            <td class="py-4 px-6">{{ enrollClass.classId }}</td>
+                            <td
+                                scope="row"
+                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                            >
+                                {{ enrollClass.groupId }}
+                            </td>
+                            <td class="py-4 px-6">{{ enrollClass.schedule.day }}</td>
+                            <td class="py-4 px-6">{{ enrollClass.schedule.memberNum }}</td>
+                            <td class="py-4 px-6">{{ enrollClass.schedule.periods }}</td>
+                            <td class="py-4 px-6">{{ enrollClass.schedule.weeks }}</td>
+
+                            <td>
+                                <button
+                                    class="text-white py-2 w-full my-4 rounded-md transition-all bg-red-400 hover:bg-red-500 cursor-pointer"
+                                    @click="handleRemoveEnrollmentClass(enrollClass)"
+                                >
+                                    Remove
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div v-if="enrollList.length == 0 && enrollmentList.length == 0" class="flex w-full justify-center p-8">
+                    <h1 class="">Empty list, there is no data!</h1>
+                </div>
+            </div>
         </main>
     </div>
 </template>
@@ -113,6 +162,7 @@ export default {
             semesterAliasList: [],
             semesterAlias: "",
             enrollList: [],
+            enrollmentList: [],
             courseList: [],
         };
     },
@@ -127,13 +177,40 @@ export default {
             await axios
                 .get(`${process.env.VUE_APP_API_GATEWAY}/course-service/v1/semester/get-all`)
                 .then((res) => {
-                    // console.log(res);
                     if (res.data.status) {
                         this.semesterAliasList = res.data.data.list;
                     }
                 })
                 .catch(() => {
                     this.semesterAliasList = [];
+                });
+            this.isLoading = false;
+        },
+        async handleFetchEnrolled() {
+            this.isLoading = true;
+            await axios
+                .post(`${process.env.VUE_APP_API_GATEWAY}/course-service/v1/schedule/enrollment/semester`, {
+                    studentId: this.payload.username,
+                    semesterAlias: this.semesterAlias,
+                })
+                .then((res) => {
+                    console.log(res);
+                    if (res.data.status) {
+                        res.data.data.list.forEach((element) => {
+                            const isCorrect = this.courseData.filter((item) => element.courseCode == item.code);
+                            // console.log(isCorrect);
+                            if (isCorrect.length > 0) {
+                                element.courseName = isCorrect[0].name;
+                            }
+                        });
+                        this.enrollmentList = res.data.data.list;
+                        this.enrollList = [];
+                    } else {
+                        this.toastify.error(res.data.message);
+                    }
+                })
+                .catch(() => {
+                    this.enrollmentList = [];
                 });
             this.isLoading = false;
         },
@@ -167,7 +244,6 @@ export default {
                 .then((res) => {
                     // console.log(res);
                     if (res.data.status) {
-                        this.toastify.success(res.data.message);
                         res.data.data.list.forEach((element) => {
                             const isCorrect = this.courseData.filter((item) => element.courseCode == item.code);
                             // console.log(isCorrect);
@@ -176,6 +252,8 @@ export default {
                             }
                         });
                         this.enrollList = res.data.data.list;
+                        this.enrollmentList = [];
+                        this.toastify.success(res.data.message);
                     } else {
                         this.toastify.error(res.data.message);
                         this.enrollList = [];
@@ -194,8 +272,8 @@ export default {
                 .post(`${process.env.VUE_APP_API_GATEWAY}/course-service/v1/schedule/enroll`, {
                     studentId: this.payload.username,
                     courseCode: enrollClass.courseCode,
-                    enrollClass: enrollClass.semesterAlias,
-                    semesterAlias: enrollClass.groupId,
+                    semesterAlias: enrollClass.semesterAlias,
+                    groupId: enrollClass.groupId,
                 })
                 .then((res) => {
                     console.log(res);
@@ -210,6 +288,33 @@ export default {
                     this.toastify.error(err.response.data.message);
                     this.enrollList = [];
                 });
+            this.isLoading = false;
+        },
+        async handleRemoveEnrollmentClass(enrollClass) {
+            this.isLoading = true;
+            await axios
+                .delete(`${process.env.VUE_APP_API_GATEWAY}/course-service/v1/schedule/delete-enroll`, {
+                    data: {
+                        studentId: this.payload.username,
+                        courseCode: enrollClass.courseCode,
+                        semesterAlias: enrollClass.semesterAlias,
+                        groupId: enrollClass.groupId,
+                    },
+                })
+                .then((res) => {
+                    console.log(res);
+                    if (res.data.status) {
+                        this.toastify.success(res.data.message);
+                    } else {
+                        this.toastify.error(res.data.message);
+                    }
+                })
+                .catch((err) => {
+                    if (!err.response?.data.message) return this.toastify.error(err.message);
+                    this.toastify.error(err.response.data.message);
+                    this.enrollList = [];
+                });
+            this.handleFetchEnrolled();
             this.isLoading = false;
         },
     },
