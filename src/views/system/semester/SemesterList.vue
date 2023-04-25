@@ -42,6 +42,7 @@
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" class="py-3 px-6">Alias</th>
+                            <th scope="col" class="py-3 px-6">Status</th>
                             <th scope="col" class="py-3 px-6">Created At</th>
                             <th scope="col" class="py-3 px-6">Last modified</th>
                             <th scope="col" class="py-3 px-6" v-if="payload.role == 'ADMIN'">Action</th>
@@ -50,6 +51,7 @@
                     <tbody v-if="semesterList && semesterList.length > 0">
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700" v-for="(semester, i) in semesterList" :key="i">
                             <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ semester.alias }}</th>
+                            <td class="py-4 px-6">{{ semester.status }}</td>
                             <td class="py-4 px-6">{{ dateFormat(semester.createdAt) }}</td>
                             <td class="py-4 px-6">{{ dateFormat(semester.updatedAt) }}</td>
                             <td class="py-4 px-6" v-on:click="semesterRemoveHandler(semester.alias)" v-if="payload.role == 'ADMIN'">
