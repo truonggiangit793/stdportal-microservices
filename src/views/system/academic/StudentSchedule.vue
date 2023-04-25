@@ -124,7 +124,7 @@ export default {
         async handleFetchStudentSchedule() {
             this.isLoading = true;
             await axios
-                .post(`${process.env.VUE_APP_API_GATEWAY}/course-service/v1/enrollment/all`, {
+                .post(`${process.env.VUE_APP_API_GATEWAY}/course-service/v1/schedule/enrollment/all`, {
                     studentId: this.studentId,
                     semesterAlias: this.semesterAlias,
                 })
