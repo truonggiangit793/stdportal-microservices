@@ -73,8 +73,8 @@ export default {
                 .get(`${process.env.VUE_APP_API_GATEWAY}/course-service/v1/course/get-all`)
                 .then((res) => {
                     if (res.data.status) {
-                        this.courseList = res.data.data.total;
-                        this.totalCourse = res.data.data.list;
+                        this.courseList = res.data.data.list;
+                        this.totalCourse = res.data.data.total;
                     }
                 })
                 .catch(() => {
