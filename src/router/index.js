@@ -14,7 +14,27 @@ const routes = [
     {
         path: "/system/account/all",
         name: "accountAll",
-        component: () => import(/* webpackChunkName: "accountAll" */ "../views/system/AccountList.vue"),
+        component: () => import(/* webpackChunkName: "accountAll" */ "../views/system/accounts/AccountList.vue"),
+    },
+    {
+        path: "/system/account/new",
+        name: "accountNew",
+        component: () => import(/* webpackChunkName: "accountNew" */ "../views/system/accounts/AccountNew.vue"),
+    },
+    {
+        path: "/system/department/all",
+        name: "departmentAll",
+        component: () => import(/* webpackChunkName: "departmentAll" */ "../views/system/departments/DepartmentList.vue"),
+    },
+    {
+        path: "/system/department/new",
+        name: "departmentNew",
+        component: () => import(/* webpackChunkName: "departmentNew" */ "../views/system/departments/DepartmentNew.vue"),
+    },
+    {
+        path: "/system/academic/analysis",
+        name: "academicAnalysis",
+        component: () => import(/* webpackChunkName: "academicAnalysis" */ "../views/system/academic/AcademicAnalysis.vue"),
     },
 
     {
