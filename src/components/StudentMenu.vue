@@ -5,139 +5,37 @@
             <h1 class="font-bold text-2xl ml-4">Academic Portal</h1>
         </div>
         <div class="w-full p-6 main-content-menu">
+            <div class="w-full p-6 main-content-menu" v-if="payload && payload.role == 'student'">
             <h1 class="text-2xl text-center">{{ payload ? `Hi, ${payload.fullName}` : "Welcome!" }}</h1>
             <div class="menu-list mt-8" v-if="payload && accessToken">
-                <ul class="mb-3">
-                    <div class="flex items-center mb-1 text-white">
-                        <ThemifyIcon icon="arrow-circle-right" />
-                        <h1 class="ml-2 font-bold">Account Management</h1>
-                    </div>
-                    <router-link to="/system/account/all">
+                <ul >
+                    <router-link to="/student">
                         <div class="flex items-center w-full pl-6 transition-all">
                             <ThemifyIcon icon="user" />
-                            <li class="p-1 pl-2">Account List</li>
+                            <li class="p-1 pl-2">PROFILE</li>
+                        </div>
+                    </router-link>
+                    <router-link to="/student/course">
+                        <div class="flex items-center w-full pl-6 transition-all">
+                            <ThemifyIcon icon="user" />
+                            <li class="p-1 pl-2">COURSE REGISTER MANAGEMENT</li>
                         </div>
                     </router-link>
                     <router-link to="/system/account/new">
                         <div class="flex items-center w-full pl-6 transition-all">
                             <ThemifyIcon icon="plus" />
-                            <li class="p-1 pl-2">Create</li>
+                            <li class="p-1 pl-2">Score</li>
                         </div>
                     </router-link>
-                </ul>
-                <hr class="my-4 opacity-50" />
-                <ul class="mb-3">
-                    <div class="flex items-center mb-1 text-white">
-                        <ThemifyIcon icon="arrow-circle-right" />
-                        <h1 class="ml-2 font-bold">Department Management</h1>
-                    </div>
-                    <router-link to="/system/department/all">
-                        <div class="flex items-center w-full pl-6 transition-all">
-                            <ThemifyIcon icon="harddrives" />
-                            <li class="p-1 pl-2">Department list</li>
-                        </div>
-                    </router-link>
-                    <router-link to="/system/department/new">
+                    <router-link to="/system/account/new">
                         <div class="flex items-center w-full pl-6 transition-all">
                             <ThemifyIcon icon="plus" />
-                            <li class="p-1 pl-2">Create</li>
+                            <li class="p-1 pl-2">Timetable</li>
                         </div>
                     </router-link>
                 </ul>
-                <hr class="my-4 opacity-50" />
-                <ul class="mb-3">
-                    <div class="flex items-center mb-1 text-white">
-                        <ThemifyIcon icon="arrow-circle-right" />
-                        <h1 class="ml-2 font-bold">Academic Management</h1>
-                    </div>
-                    <router-link to="/system/academic/analysis">
-                        <div class="flex items-center w-full pl-6 transition-all">
-                            <ThemifyIcon icon="bar-chart" />
-                            <li class="p-1 pl-2">Academic analysis</li>
-                        </div>
-                    </router-link>
-                    <router-link to="/system/academic/student">
-                        <div class="flex items-center w-full pl-6 transition-all">
-                            <ThemifyIcon icon="agenda" />
-                            <li class="p-1 pl-2">Student academic</li>
-                        </div>
-                    </router-link>
-                    <router-link to="/system/course/data/all">
-                        <div class="flex items-center w-full pl-6 transition-all">
-                            <ThemifyIcon icon="archive" />
-                            <li class="p-1 pl-2">Course data</li>
-                        </div>
-                    </router-link>
-                    <router-link to="/system/course/data/new">
-                        <div class="flex items-center w-full pl-6 transition-all">
-                            <ThemifyIcon icon="plus" />
-                            <li class="p-1 pl-2">Course create</li>
-                        </div>
-                    </router-link>
-                    <router-link to="/system/schedule/student">
-                        <div class="flex items-center w-full pl-6 transition-all">
-                            <ThemifyIcon icon="book" />
-                            <li class="p-1 pl-2">Student schedule</li>
-                        </div>
-                    </router-link>
-                </ul>
-                <hr class="my-4 opacity-50" />
-                <ul class="mb-3">
-                    <div class="flex items-center mb-1 text-white">
-                        <ThemifyIcon icon="arrow-circle-right" />
-                        <h1 class="ml-2 font-bold">Class Management</h1>
-                    </div>
-                    <router-link to="/system/class/all">
-                        <div class="flex items-center w-full pl-6 transition-all">
-                            <ThemifyIcon icon="comments" />
-                            <li class="p-1 pl-2">Class list</li>
-                        </div>
-                    </router-link>
-                    <router-link to="/system/class/new">
-                        <div class="flex items-center w-full pl-6 transition-all">
-                            <ThemifyIcon icon="plus" />
-                            <li class="p-1 pl-2">Create</li>
-                        </div>
-                    </router-link>
-                </ul>
-                <hr class="my-4 opacity-50" />
-                <ul class="mb-3">
-                    <div class="flex items-center mb-1 text-white">
-                        <ThemifyIcon icon="arrow-circle-right" />
-                        <h1 class="ml-2 font-bold">Student Management</h1>
-                    </div>
-                    <router-link to="/system/student/all">
-                        <div class="flex items-center w-full pl-6 transition-all">
-                            <ThemifyIcon icon="user" />
-                            <li class="p-1 pl-2">Student list</li>
-                        </div>
-                    </router-link>
-                    <router-link to="/system/student/new">
-                        <div class="flex items-center w-full pl-6 transition-all">
-                            <ThemifyIcon icon="plus" />
-                            <li class="p-1 pl-2">Create</li>
-                        </div>
-                    </router-link>
-                </ul>
-                <hr class="my-4 opacity-50" />
-                <ul class="mb-3">
-                    <div class="flex items-center mb-1 text-white">
-                        <ThemifyIcon icon="arrow-circle-right" />
-                        <h1 class="ml-2 font-bold">Semester Management</h1>
-                    </div>
-                    <router-link to="/system/semester/all">
-                        <div class="flex items-center w-full pl-6 transition-all">
-                            <ThemifyIcon icon="bookmark" />
-                            <li class="p-1 pl-2">Semester list</li>
-                        </div>
-                    </router-link>
-                    <router-link to="/system/semester/new">
-                        <div class="flex items-center w-full pl-6 transition-all">
-                            <ThemifyIcon icon="plus" />
-                            <li class="p-1 pl-2">Create</li>
-                        </div>
-                    </router-link>
-                </ul>
+                
+            </div>
             </div>
         </div>
         <div class="bottom-container">
