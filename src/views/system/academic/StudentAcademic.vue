@@ -5,23 +5,36 @@
             <Loading :active="isLoading" :is-full-page="true" :can-cancel="false" />
             <div class="flex items-center mb-4 text-green-700 font-bold text-lg uppercase">
                 <ThemifyIcon icon="menu" />
-                <h1 class="ml-2">Academic analyzing:</h1>
+                <h1 class="ml-2">Student academic:</h1>
             </div>
             <div class="mb-2 text-md font-medium text-gray-900 flex items-center">
                 <ThemifyIcon icon="settings" />
-                <p class="ml-2">Select semester for analyzing:</p>
+                <p class="ml-2">Please enter a specific student for academic information by providing student ID:</p>
             </div>
             <div class="mb-6">
-                <div class="mb-6">
-                    <select v-model="semesterAlias" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
-                        <template v-for="(semester, index) in semesterAliasList">
-                            <option :value="semester.alias" :key="index">{{ semester.alias }}</option>
-                        </template>
-                    </select>
+                <div class="grid gap-6 mb-6 md:grid-cols-2">
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Student ID</label>
+                        <input
+                            v-model="studentId"
+                            type="text"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            placeholder="Student ID"
+                            required=""
+                        />
+                    </div>
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Semester</label>
+                        <select v-model="semesterAlias" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                            <template v-for="(semester, index) in semesterAliasList">
+                                <option :value="semester.alias" :key="index">{{ semester.alias }}</option>
+                            </template>
+                        </select>
+                    </div>
                 </div>
                 <button
                     type="submit"
-                    v-on:click="handleFetchAcademicAnalyzing"
+                    v-on:click="handleFetchStudentAcademic"
                     class="text-white transition-all bg-blue-400 hover:bg-blue-500 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-8 py-2.5 text-center"
                 >
                     Submit
@@ -34,26 +47,38 @@
             <div class="flex items-center mb-4 text-gray-700 font-bold uppercase">
                 <h1 class="ml-2">Total faculty: {{ totalFaculties }}</h1>
             </div>
+
+            <!-- {
+                "_id": "6447ea7bba7cf5b94df51dcf",
+                "studentId": "19188755",
+                "courseCode": 432543634321,
+                "semesterAlias": "HK2-2023-2024",
+                "deleted": false,
+                "createdAt": "2023-04-25T14:58:03.737Z",
+                "updatedAt": "2023-04-25T14:58:03.737Z",
+                "__v": 0
+            } -->
+
             <div class="overflow-x-auto relative">
                 <table class="overflow-scroll w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
+                            <th scope="col" class="py-3 px-6">Student ID</th>
                             <th scope="col" class="py-3 px-6">Course code</th>
-                            <th scope="col" class="py-3 px-6">Course name</th>
                             <th scope="col" class="py-3 px-6">Semester</th>
-                            <th scope="col" class="py-3 px-6">Registration Count</th>
+                            <th scope="col" class="py-3 px-6">Submitted on</th>
                         </tr>
                     </thead>
-                    <tbody v-if="academicAnalyzing && academicAnalyzing.length > 0">
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700" v-for="(academic, i) in academicAnalyzing" :key="i">
-                            <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ academic.courseCode }}</th>
-                            <td class="py-4 px-6">{{ academic.name }}</td>
+                    <tbody v-if="studentAcademicData && studentAcademicData.length > 0">
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700" v-for="(academic, i) in studentAcademicData" :key="i">
+                            <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ academic.studentId }}</th>
+                            <td class="py-4 px-6">{{ academic.courseCode }}</td>
                             <td class="py-4 px-6">{{ academic.semesterAlias }}</td>
-                            <td class="py-4 px-6">{{ academic.registrationCount }}</td>
+                            <td class="py-4 px-6">{{ dateFormat(academic.createdAt) }}</td>
                         </tr>
                     </tbody>
                 </table>
-                <div v-if="!academicAnalyzing || academicAnalyzing.length == 0" class="flex w-full justify-center p-8">
+                <div v-if="!studentAcademicData || studentAcademicData.length == 0" class="flex w-full justify-center p-8">
                     <h1 class="">Empty list, there is no data!</h1>
                 </div>
             </div>
@@ -74,9 +99,10 @@ export default {
     data() {
         return {
             isLoading: true,
-            semesterAliasList: [],
+            studentId: "",
             semesterAlias: "",
-            academicAnalyzing: [],
+            semesterAliasList: [],
+            studentAcademicData: [],
         };
     },
     async mounted() {
@@ -98,23 +124,23 @@ export default {
                 });
             this.isLoading = false;
         },
-        async handleFetchAcademicAnalyzing() {
+        async handleFetchStudentAcademic() {
             this.isLoading = true;
             await axios
-                .get(`${process.env.VUE_APP_API_GATEWAY}/course-service/v1/academic/statistics/${this.semesterAlias}`)
+                .get(`${process.env.VUE_APP_API_GATEWAY}/course-service/v1/academic/get/?studentId=${this.studentId}&semesterAlias=${this.semesterAlias}`)
                 .then((res) => {
                     if (res.data.status) {
                         this.toastify.success(res.data.message);
-                        this.academicAnalyzing = res.data.data;
+                        this.studentAcademicData = res.data.data.list;
                     } else {
                         this.toastify.error(res.data.message);
-                        this.academicAnalyzing = [];
+                        this.studentAcademicData = [];
                     }
                 })
                 .catch((err) => {
                     if (!err.response?.data.message) return this.toastify.error(err.message);
                     this.toastify.error(err.response.data.message);
-                    this.academicAnalyzing = [];
+                    this.studentAcademicData = [];
                 });
             this.isLoading = false;
         },
