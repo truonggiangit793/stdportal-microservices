@@ -135,6 +135,7 @@
                 </ul>
             </div>
         </div>
+         
         <div class="bottom-container">
             <div class="logout-btn py-1 hover:bg-red-500 transition-all bg-red-400 flex justify-center items-center cursor-pointer" v-on:click="handleSignOut">
                 <ThemifyIcon icon="power-off" />

@@ -24,17 +24,31 @@ const routes = [
     {
         path: "/system/department/all",
         name: "departmentAll",
-        component: () => import(/* webpackChunkName: "departmentAll" */ "../views/system/departments/DepartmentList.vue"),
+        component: () =>
+            import(/* webpackChunkName: "departmentAll" */ "../views/system/departments/DepartmentList.vue"),
     },
     {
         path: "/system/department/new",
         name: "departmentNew",
-        component: () => import(/* webpackChunkName: "departmentNew" */ "../views/system/departments/DepartmentNew.vue"),
+        component: () =>
+            import(/* webpackChunkName: "departmentNew" */ "../views/system/departments/DepartmentNew.vue"),
     },
     {
         path: "/system/academic/analysis",
         name: "academicAnalysis",
-        component: () => import(/* webpackChunkName: "academicAnalysis" */ "../views/system/academic/AcademicAnalysis.vue"),
+        component: () =>
+            import(/* webpackChunkName: "academicAnalysis" */ "../views/system/academic/AcademicAnalysis.vue"),
+    },
+
+    {
+        path: "/student",
+        name: "studentMe",
+        component: () => import(/* webpackChunkName: "studentMe" */ "../views/student/profileMe.vue"),
+    },
+    {
+        path: "/student/academic",
+        name: "studentAcademic",
+        component: () => import(/* webpackChunkName: "studentMe" */ "../views/student/academicList.vue"),
     },
     {
         path: "/system/course/data/all",
