@@ -29,18 +29,12 @@
                 <ul class="mb-3">
                     <div class="flex items-center mb-1 text-white">
                         <ThemifyIcon icon="arrow-circle-right" />
-                        <h1 class="ml-2 font-bold">Department Management</h1>
+                        <h1 class="ml-2 font-bold">Faculty Management</h1>
                     </div>
                     <router-link to="/system/department/all">
                         <div class="flex items-center w-full pl-6 transition-all">
                             <ThemifyIcon icon="harddrives" />
-                            <li class="p-1 pl-2">Department list</li>
-                        </div>
-                    </router-link>
-                    <router-link to="/system/department/new">
-                        <div class="flex items-center w-full pl-6 transition-all">
-                            <ThemifyIcon icon="plus" />
-                            <li class="p-1 pl-2">Create</li>
+                            <li class="p-1 pl-2">List and Create</li>
                         </div>
                     </router-link>
                 </ul>
