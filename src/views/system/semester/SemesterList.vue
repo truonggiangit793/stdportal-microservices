@@ -92,7 +92,7 @@ export default {
         async fetchData() {
             this.isLoading = true;
             await axios
-                .get(`${process.env.VUE_APP_API_GATEWAY}/course-service/v1/semester/all`)
+                .get(`${process.env.VUE_APP_API_GATEWAY}/course-service/v1/semester/get-all`)
                 .then((res) => {
                     if (res.data.status) {
                         this.semesterList = res.data.data.list;
