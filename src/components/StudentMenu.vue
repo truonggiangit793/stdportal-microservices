@@ -6,38 +6,45 @@
         </div>
         <div class="w-full p-6 main-content-menu">
             <div class="w-full p-6 main-content-menu" v-if="payload && payload.role == 'student'">
-            <h1 class="text-2xl text-center">{{ payload ? `Hi, ${payload.fullName}` : "Welcome!" }}</h1>
-            <div class="menu-list mt-8" v-if="payload && accessToken">
-                <ul >
-                    <router-link to="/student">
-                        <div class="flex items-center w-full pl-6 transition-all">
-                            <ThemifyIcon icon="user" />
-                            <li class="p-1 pl-2">PROFILE</li>
-                        </div>
-                    </router-link>
-                    <router-link to="/student/academic">
-                        <div class="flex items-center w-full pl-6 transition-all">
-                            <li class="p-1 pl-2">ACADEMIC</li>
-                        </div>
-                    </router-link>
-                    <router-link to="/system/account/new">
-                        <div class="flex items-center w-full pl-6 transition-all">
-                            <li class="p-1 pl-2">ENROLL ACADEMIC</li>
-                        </div>
-                    </router-link>
-                    <router-link to="/system/account/new">
-                        <div class="flex items-center w-full pl-6 transition-all">
-                            <ThemifyIcon icon="plus" />
-                            <li class="p-1 pl-2">Timetable</li>
-                        </div>
-                    </router-link>
-                </ul>
-                
-            </div>
+                <h1 class="text-2xl text-center">{{ payload ? `Hi, ${payload.fullName}` : "Welcome!" }}</h1>
+                <div class="menu-list mt-8" v-if="payload && accessToken">
+                    <ul>
+                        <router-link to="/student">
+                            <div class="flex items-center w-full pl-6 transition-all">
+                                <ThemifyIcon icon="user" />
+                                <li class="p-1 pl-2">PROFILE</li>
+                            </div>
+                        </router-link>
+                        <router-link to="/student/academic">
+                            <div class="flex items-center w-full pl-6 transition-all">
+                                <li class="p-1 pl-2">ACADEMIC</li>
+                            </div>
+                        </router-link>
+                        <!-- <router-link to="/system/academic/list">
+                            <div class="flex items-center w-full pl-6 transition-all">
+                                <li class="p-1 pl-2">REGISTER ACADEMIC</li>
+                            </div>
+                        </router-link> -->
+                        <router-link to="/student/enroll">
+                            <div class="flex items-center w-full pl-6 transition-all">
+                                <li class="p-1 pl-2">ENROLL</li>
+                            </div>
+                        </router-link>
+                        <router-link to="/system/account/new">
+                            <div class="flex items-center w-full pl-6 transition-all">
+                                <ThemifyIcon icon="plus" />
+                                <li class="p-1 pl-2">Timetable</li>
+                            </div>
+                        </router-link>
+                    </ul>
+                </div>
             </div>
         </div>
         <div class="bottom-container">
-            <div class="logout-btn py-1 hover:bg-red-500 transition-all bg-red-400 flex justify-center items-center cursor-pointer" v-on:click="handleSignOut">
+            <div
+                class="logout-btn py-1 hover:bg-red-500 transition-all bg-red-400 flex justify-center items-center cursor-pointer"
+                v-on:click="handleSignOut"
+            >
                 <ThemifyIcon icon="power-off" />
                 <button class="ml-4">Logout</button>
             </div>

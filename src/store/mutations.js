@@ -10,7 +10,7 @@ export default {
         localStorage.setItem("payload", JSON.stringify(payload));
         state.payload = payload;
     },
-    set_tableData(state, tableData) {
-        state.tableData = tableData;
+    set_courseData(state, courseData) {
+        state.courseData = courseData;
     },
 };
