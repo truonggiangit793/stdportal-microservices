@@ -15,16 +15,14 @@
                             <li class="p-1 pl-2">PROFILE</li>
                         </div>
                     </router-link>
-                    <router-link to="/student/course">
+                    <router-link to="/student/academic">
                         <div class="flex items-center w-full pl-6 transition-all">
-                            <ThemifyIcon icon="user" />
-                            <li class="p-1 pl-2">COURSE REGISTER MANAGEMENT</li>
+                            <li class="p-1 pl-2">ACADEMIC</li>
                         </div>
                     </router-link>
                     <router-link to="/system/account/new">
                         <div class="flex items-center w-full pl-6 transition-all">
-                            <ThemifyIcon icon="plus" />
-                            <li class="p-1 pl-2">Score</li>
+                            <li class="p-1 pl-2">ENROLL ACADEMIC</li>
                         </div>
                     </router-link>
                     <router-link to="/system/account/new">
