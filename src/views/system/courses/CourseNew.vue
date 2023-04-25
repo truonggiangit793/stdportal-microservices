@@ -109,7 +109,7 @@ export default {
             courseDataList: [],
         };
     },
-    mounted: () => {
+    async mounted() {
         this.fetchCourseData();
     },
     methods: {

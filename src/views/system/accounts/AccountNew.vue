@@ -132,6 +132,7 @@ export default {
                     }
                 })
                 .catch((err) => {
+                    if (!err.response?.data.message) return this.toastify.error(err.message);
                     this.toastify.error(err.response.data.message);
                 });
             this.isLoading = false;

@@ -92,13 +92,14 @@ export default {
                 .delete(`${process.env.VUE_APP_API_GATEWAY}/account/${userCode}?token=${this.accessToken}`)
                 .then((res) => {
                     if (res.data.status) {
-                        this.toastify.success(res.data.msg.en);
+                        this.toastify.success(res.data.message);
                     } else {
-                        this.toastify.error(res.data.msg.en);
+                        this.toastify.error(res.data.message);
                     }
                 })
                 .catch((err) => {
-                    this.toastify.error(err.response.data.msg.en);
+                    if (!err.response?.data.message) return this.toastify.error(err.message);
+                    this.toastify.error(err.response.data.message);
                 });
             this.fetchData();
             this.isLoading = false;

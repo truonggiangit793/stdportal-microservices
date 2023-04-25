@@ -1,7 +1,6 @@
 <template>
     <div class="left-menu">
-        <div class="flex text-white justify-center items-center p-4" style="background: rgb(71 69 139)">
-            <!-- <img src="@/assets/logo.png" width="25px" /> -->
+        <div class="flex text-white justify-center items-center p-4" style="background: rgb(57 57 57)">
             <img class="w-8 h-8" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" />
             <h1 class="font-bold text-2xl ml-3">Academic Portal</h1>
         </div>
@@ -75,6 +74,12 @@
                             <li class="p-1 pl-2">Student schedule</li>
                         </div>
                     </router-link>
+                    <router-link to="/system/schedule/new">
+                        <div class="flex items-center w-full pl-6 transition-all">
+                            <ThemifyIcon icon="plus" />
+                            <li class="p-1 pl-2">New Schedule</li>
+                        </div>
+                    </router-link>
                 </ul>
                 <hr class="my-4 opacity-50" />
                 <ul class="mb-3">
@@ -123,19 +128,13 @@
                     <router-link to="/system/semester/all">
                         <div class="flex items-center w-full pl-6 transition-all">
                             <ThemifyIcon icon="bookmark" />
-                            <li class="p-1 pl-2">Semester list</li>
-                        </div>
-                    </router-link>
-                    <router-link to="/system/semester/new">
-                        <div class="flex items-center w-full pl-6 transition-all">
-                            <ThemifyIcon icon="plus" />
-                            <li class="p-1 pl-2">Create</li>
+                            <li class="p-1 pl-2">List and Create</li>
                         </div>
                     </router-link>
                 </ul>
             </div>
         </div>
-         
+
         <div class="bottom-container">
             <div class="logout-btn py-1 hover:bg-red-500 transition-all bg-red-400 flex justify-center items-center cursor-pointer" v-on:click="handleSignOut">
                 <ThemifyIcon icon="power-off" />
@@ -178,7 +177,7 @@ export default {
     width: 300px;
     top: 0;
     bottom: 0;
-    background: #797cbd;
+    background: #515577;
     color: white;
     box-shadow: 8px 0 10px 0 #0000001f;
     z-index: 10;
@@ -209,7 +208,7 @@ a.is-active div {
 .bottom-container {
     position: fixed;
     bottom: 0;
-    background: rgb(71, 69, 139);
+    background: rgb(57 57 57);
     width: 300px;
     padding: 20px;
 }

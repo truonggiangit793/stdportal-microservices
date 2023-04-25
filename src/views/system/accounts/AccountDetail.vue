@@ -109,9 +109,9 @@ export default {
                 })
                 .then((res) => {
                     if (res.data.status) {
-                        this.toastify.success(res.data.msg.en);
+                        this.toastify.success(res.data.message);
                     } else {
-                        this.toastify.error(res.data.msg.en);
+                        this.toastify.error(res.data.message);
                     }
                 });
             this.isLoading = false;
