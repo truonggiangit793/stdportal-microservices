@@ -1,8 +1,9 @@
 <template>
     <div class="left-menu">
         <div class="flex text-white justify-center items-center p-4" style="background: rgb(71 69 139)">
-            <img src="@/assets/logo.png" width="25px" />
-            <h1 class="font-bold text-2xl ml-4">Academic Portal</h1>
+            <!-- <img src="@/assets/logo.png" width="25px" /> -->
+            <img class="w-8 h-8" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" />
+            <h1 class="font-bold text-2xl ml-3">Academic Portal</h1>
         </div>
         <div class="w-full p-6 main-content-menu" v-if="payload && payload.role == 'ADMIN'">
             <h1 class="text-2xl text-center">{{ payload ? `Hi, ${payload.fullName}` : "Welcome!" }}</h1>
